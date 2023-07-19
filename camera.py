@@ -9,6 +9,7 @@ class Camera:
         self.pitch = glm.radians(pitch)
 
         self.up = glm.vec3(0, 1, 0)
+        self.down = glm.vec3(0, -1, 0)
         self.right = glm.vec3(1, 0, 0)
         self.forward = glm.vec3(0, 0, -1)
 
@@ -57,3 +58,9 @@ class Camera:
 
     def move_back(self, velocity):
         self.position -= self.forward * velocity
+
+    def fly_up(self, velocity):
+        self.position += self.up * velocity
+
+    def fly_down(self, velocity):
+        self.position += self.down * velocity

@@ -67,6 +67,8 @@ class VoxelEngine:
         pg.quit()
         sys.exit()
 
+pg.init()
+pg.mouse.set_visible(False)
 
 if __name__ == '__main__':
     app = VoxelEngine()
