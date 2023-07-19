@@ -12,6 +12,7 @@ class Camera:
         self.down = glm.vec3(0, -1, 0)
         self.right = glm.vec3(1, 0, 0)
         self.forward = glm.vec3(0, 0, -1)
+        self.run = self.forward * 4
 
         self.m_proj = glm.perspective(V_FOV, ASPECT_RATIO, NEAR, FAR)
         self.m_view = glm.mat4()
@@ -55,6 +56,9 @@ class Camera:
 
     def move_forward(self, velocity):
         self.position += self.forward * velocity
+
+    def run_forward(self, velocity):
+        self.position += self.run * velocity
 
     def move_back(self, velocity):
         self.position -= self.forward * velocity

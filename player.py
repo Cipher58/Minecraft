@@ -1,7 +1,7 @@
 import pygame as pg
 from camera import Camera
 from settings import *
-
+import time
 
 class Player(Camera):
     def __init__(self, app, position=PLAYER_POS, yaw=-90, pitch=0):
@@ -30,10 +30,22 @@ class Player(Camera):
             self.rotate_pitch(delta_y=mouse_dy * MOUSE_SENSITIVITY)
 
     def keyboard_control(self):
+        w_pressed_times = []
+        double_tap_threshold = 2
         key_state = pg.key.get_pressed()
         vel = PLAYER_SPEED * self.app.delta_time
         if key_state[pg.K_w]:
-            self.move_forward(vel)
+            current_time = time.time()
+            self.w_pressed_times.append(current_time)
+            self.w_pressed_times = [t for t in self.w_pressed_times if current_time - t <= double_tap_threshold]
+
+            if len(self.w_pressed_times) == 2:
+                self.run_forward(vel * 3)
+                print("Double tap")
+            else:
+                self.move_forward(vel)
+        else:
+            self.w_pressed_times = []
         if key_state[pg.K_s]:
             self.move_back(vel)
         if key_state[pg.K_d]:
