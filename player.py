@@ -2,11 +2,15 @@ import pygame as pg
 from camera import Camera
 from settings import *
 import time
+from ChatInput import *
 
 class Player(Camera):
     def __init__(self, app, position=PLAYER_POS, yaw=-90, pitch=0):
         self.app = app
         super().__init__(position, yaw, pitch)
+        self.w_pressed_times = []
+        self.chat_input = ChatInputClass()
+        self.chat_input_active = False
 
     def update(self):
         self.keyboard_control()
@@ -39,13 +43,23 @@ class Player(Camera):
             self.w_pressed_times.append(current_time)
             self.w_pressed_times = [t for t in self.w_pressed_times if current_time - t <= double_tap_threshold]
 
-            if len(self.w_pressed_times) == 2:
+            if len(self.w_pressed_times) >= 2:
                 self.run_forward(vel * 3)
                 print("Double tap")
             else:
                 self.move_forward(vel)
-        else:
+
             self.w_pressed_times = []
+
+        if key_state[pg.K_k]:
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
+            self.move_forward(vel)
         if key_state[pg.K_s]:
             self.move_back(vel)
         if key_state[pg.K_d]:
@@ -60,3 +74,7 @@ class Player(Camera):
             self.fly_up(vel)
         if key_state[pg.K_LSHIFT]:
             self.fly_down(vel)
+        if key_state[pg.K_t]:
+            self.chat_input.active = True
+        elif self.chat_input_active:
+            self.chat_input.handle_event(event)
